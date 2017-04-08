@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PMML xmlns="http://www.dmg.org/PMML-4_3" version="4.3">
+	<Header>
+		<Application name="JPMML-SkLearn" version="1.2.11"/>
+		<Timestamp>2017-04-08T14:17:57Z</Timestamp>
+	</Header>
+	<MiningBuildTask>
+		<Extension>PMMLPipeline(steps=[('mapper', DataFrameMapper(default=False, df_out=False,
+        features=[(['Sepal.Length', 'Sepal.Width', 'Petal.Length', 'Petal.Width'], TransformerPipeline(steps=[('continuousdomain', ContinuousDomain()), ('imputer', Imputer(axis=0, copy=True, missing_values='NaN', strategy='mean', verbose=0))]))],
+        sparse=False)),
+       ('pca', PCA(copy=True, iterated_power='auto', n_components=3, random_state=None,
+  svd_solver='auto', tol=0.0, whiten=False)),
+       ('selector', SelectKBest(k=2, score_func=&lt;function f_classif at 0x7f057bc0a488&gt;)),
+       ('classifier', DecisionTreeClassifier(class_weight=None, criterion='gini', max_depth=None,
+            max_features=None, max_leaf_nodes=None,
+            min_impurity_split=1e-07, min_samples_leaf=1,
+            min_samples_split=2, min_weight_fraction_leaf=0.0,
+            presort=False, random_state=None, splitter='best'))])</Extension>
+	</MiningBuildTask>
+	<DataDictionary>
+		<DataField name="Species" optype="categorical" dataType="string">
+			<Value value="Setosa"/>
+			<Value value="Versicolor"/>
+			<Value value="Virginica"/>
+		</DataField>
+		<DataField name="Sepal.Length" optype="continuous" dataType="double">
+			<Interval closure="closedClosed" leftMargin="4.3" rightMargin="7.9"/>
+		</DataField>
+		<DataField name="Sepal.Width" optype="continuous" dataType="double">
+			<Interval closure="closedClosed" leftMargin="2.0" rightMargin="4.4"/>
+		</DataField>
+		<DataField name="Petal.Length" optype="continuous" dataType="double">
+			<Interval closure="closedClosed" leftMargin="1.0" rightMargin="6.9"/>
+		</DataField>
+		<DataField name="Petal.Width" optype="continuous" dataType="double">
+			<Interval closure="closedClosed" leftMargin="0.1" rightMargin="2.5"/>
+		</DataField>
+	</DataDictionary>
+	<TransformationDictionary>
+		<DerivedField name="pca(1)[0]" optype="continuous" dataType="double">
+			<Apply function="sum">
+				<Apply function="*">
+					<Apply function="-">
+						<FieldRef field="Sepal.Length"/>
+						<Constant dataType="double">5.843333333333334</Constant>
+					</Apply>
+					<Constant dataType="double">0.3613865917853686</Constant>
+				</Apply>
+				<Apply function="*">
+					<Apply function="-">
+						<FieldRef field="Sepal.Width"/>
+						<Constant dataType="double">3.0573333333333337</Constant>
+					</Apply>
+					<Constant dataType="double">-0.08452251406456857</Constant>
+				</Apply>
+				<Apply function="*">
+					<Apply function="-">
+						<FieldRef field="Petal.Length"/>
+						<Constant dataType="double">3.7580000000000005</Constant>
+					</Apply>
+					<Constant dataType="double">0.8566706059498351</Constant>
+				</Apply>
+				<Apply function="*">
+					<Apply function="-">
+						<FieldRef field="Petal.Width"/>
+						<Constant dataType="double">1.1993333333333336</Constant>
+					</Apply>
+					<Constant dataType="double">0.3582891971515508</Constant>
+				</Apply>
+			</Apply>
+		</DerivedField>
+		<DerivedField name="pca(1)[1]" optype="continuous" dataType="double">
+			<Apply function="sum">
+				<Apply function="*">
+					<Apply function="-">
+						<FieldRef field="Sepal.Length"/>
+						<Constant dataType="double">5.843333333333334</Constant>
+					</Apply>
+					<Constant dataType="double">0.6565887712868421</Constant>
+				</Apply>
+				<Apply function="*">
+					<Apply function="-">
+						<FieldRef field="Sepal.Width"/>
+						<Constant dataType="double">3.0573333333333337</Constant>
+					</Apply>
+					<Constant dataType="double">0.7301614347850268</Constant>
+				</Apply>
+				<Apply function="*">
+					<Apply function="-">
+						<FieldRef field="Petal.Length"/>
+						<Constant dataType="double">3.7580000000000005</Constant>
+					</Apply>
+					<Constant dataType="double">-0.17337266279585695</Constant>
+				</Apply>
+				<Apply function="*">
+					<Apply function="-">
+						<FieldRef field="Petal.Width"/>
+						<Constant dataType="double">1.1993333333333336</Constant>
+					</Apply>
+					<Constant dataType="double">-0.0754810199174637</Constant>
+				</Apply>
+			</Apply>
+		</DerivedField>
+		<DerivedField name="float(pca(1)[0])" optype="continuous" dataType="float">
+			<FieldRef field="pca(1)[0]"/>
+		</DerivedField>
+		<DerivedField name="float(pca(1)[1])" optype="continuous" dataType="float">
+			<FieldRef field="pca(1)[1]"/>
+		</DerivedField>
+	</TransformationDictionary>
+	<TreeModel functionName="classification" splitCharacteristic="binarySplit">
+		<MiningSchema>
+			<MiningField name="Species" usageType="target"/>
+			<MiningField name="Sepal.Length" missingValueReplacement="5.843333333333334" missingValueTreatment="asMean"/>
+			<MiningField name="Sepal.Width" missingValueReplacement="3.0573333333333337" missingValueTreatment="asMean"/>
+			<MiningField name="Petal.Length" missingValueReplacement="3.7580000000000005" missingValueTreatment="asMean"/>
+			<MiningField name="Petal.Width" missingValueReplacement="1.1993333333333336" missingValueTreatment="asMean"/>
+		</MiningSchema>
+		<Output>
+			<OutputField name="probability_Setosa" optype="continuous" dataType="double" feature="probability" value="Setosa"/>
+			<OutputField name="probability_Versicolor" optype="continuous" dataType="double" feature="probability" value="Versicolor"/>
+			<OutputField name="probability_Virginica" optype="continuous" dataType="double" feature="probability" value="Virginica"/>
+		</Output>
+		<Node id="1">
+			<True/>
+			<Node id="2" score="Setosa" recordCount="50.0">
+				<SimplePredicate field="float(pca(1)[0])" operator="lessOrEqual" value="-1.553145"/>
+				<ScoreDistribution value="Setosa" recordCount="50.0"/>
+				<ScoreDistribution value="Versicolor" recordCount="0.0"/>
+				<ScoreDistribution value="Virginica" recordCount="0.0"/>
+			</Node>
+			<Node id="3">
+				<SimplePredicate field="float(pca(1)[0])" operator="greaterThan" value="-1.553145"/>
+				<Node id="4">
+					<SimplePredicate field="float(pca(1)[0])" operator="lessOrEqual" value="1.1428047"/>
+					<Node id="5">
+						<SimplePredicate field="float(pca(1)[1])" operator="lessOrEqual" value="-1.1025035"/>
+						<Node id="6" score="Versicolor" recordCount="1.0">
+							<SimplePredicate field="float(pca(1)[0])" operator="lessOrEqual" value="0.006695688"/>
+							<ScoreDistribution value="Setosa" recordCount="0.0"/>
+							<ScoreDistribution value="Versicolor" recordCount="1.0"/>
+							<ScoreDistribution value="Virginica" recordCount="0.0"/>
+						</Node>
+						<Node id="7" score="Virginica" recordCount="1.0">
+							<SimplePredicate field="float(pca(1)[0])" operator="greaterThan" value="0.006695688"/>
+							<ScoreDistribution value="Setosa" recordCount="0.0"/>
+							<ScoreDistribution value="Versicolor" recordCount="0.0"/>
+							<ScoreDistribution value="Virginica" recordCount="1.0"/>
+						</Node>
+					</Node>
+					<Node id="8" score="Versicolor" recordCount="42.0">
+						<SimplePredicate field="float(pca(1)[1])" operator="greaterThan" value="-1.1025035"/>
+						<ScoreDistribution value="Setosa" recordCount="0.0"/>
+						<ScoreDistribution value="Versicolor" recordCount="42.0"/>
+						<ScoreDistribution value="Virginica" recordCount="0.0"/>
+					</Node>
+				</Node>
+				<Node id="9">
+					<SimplePredicate field="float(pca(1)[0])" operator="greaterThan" value="1.1428047"/>
+					<Node id="10">
+						<SimplePredicate field="float(pca(1)[0])" operator="lessOrEqual" value="1.5718652"/>
+						<Node id="11">
+							<SimplePredicate field="float(pca(1)[1])" operator="lessOrEqual" value="0.06388612"/>
+							<Node id="12">
+								<SimplePredicate field="float(pca(1)[1])" operator="lessOrEqual" value="-0.30522412"/>
+								<Node id="13" score="Virginica" recordCount="5.0">
+									<SimplePredicate field="float(pca(1)[1])" operator="lessOrEqual" value="-0.49793532"/>
+									<ScoreDistribution value="Setosa" recordCount="0.0"/>
+									<ScoreDistribution value="Versicolor" recordCount="0.0"/>
+									<ScoreDistribution value="Virginica" recordCount="5.0"/>
+								</Node>
+								<Node id="14">
+									<SimplePredicate field="float(pca(1)[1])" operator="greaterThan" value="-0.49793532"/>
+									<Node id="15" score="Versicolor" recordCount="2.0">
+										<SimplePredicate field="float(pca(1)[0])" operator="lessOrEqual" value="1.4535966"/>
+										<ScoreDistribution value="Setosa" recordCount="0.0"/>
+										<ScoreDistribution value="Versicolor" recordCount="2.0"/>
+										<ScoreDistribution value="Virginica" recordCount="0.0"/>
+									</Node>
+									<Node id="16" score="Virginica" recordCount="1.0">
+										<SimplePredicate field="float(pca(1)[0])" operator="greaterThan" value="1.4535966"/>
+										<ScoreDistribution value="Setosa" recordCount="0.0"/>
+										<ScoreDistribution value="Versicolor" recordCount="0.0"/>
+										<ScoreDistribution value="Virginica" recordCount="1.0"/>
+									</Node>
+								</Node>
+							</Node>
+							<Node id="17" score="Virginica" recordCount="6.0">
+								<SimplePredicate field="float(pca(1)[1])" operator="greaterThan" value="-0.30522412"/>
+								<ScoreDistribution value="Setosa" recordCount="0.0"/>
+								<ScoreDistribution value="Versicolor" recordCount="0.0"/>
+								<ScoreDistribution value="Virginica" recordCount="6.0"/>
+							</Node>
+						</Node>
+						<Node id="18" score="Versicolor" recordCount="5.0">
+							<SimplePredicate field="float(pca(1)[1])" operator="greaterThan" value="0.06388612"/>
+							<ScoreDistribution value="Setosa" recordCount="0.0"/>
+							<ScoreDistribution value="Versicolor" recordCount="5.0"/>
+							<ScoreDistribution value="Virginica" recordCount="0.0"/>
+						</Node>
+					</Node>
+					<Node id="19" score="Virginica" recordCount="37.0">
+						<SimplePredicate field="float(pca(1)[0])" operator="greaterThan" value="1.5718652"/>
+						<ScoreDistribution value="Setosa" recordCount="0.0"/>
+						<ScoreDistribution value="Versicolor" recordCount="0.0"/>
+						<ScoreDistribution value="Virginica" recordCount="37.0"/>
+					</Node>
+				</Node>
+			</Node>
+		</Node>
+	</TreeModel>
+</PMML>
